@@ -6,3 +6,11 @@ uv add langchain-openai
 uv add akshare
 uv add pandas
 uv add pydantic
+
+环境管理：Conda 管 Python 版本 + 全局环境隔离，UV 管项目依赖、极速安装
+如何查安装了哪些包？
+from langgraph.graph import StateGraph
+这个导入报错
+
+
+

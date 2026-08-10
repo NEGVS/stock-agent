@@ -25,3 +25,9 @@ cp .env.example .env
 ```bash
 python main.py
 ```
+
+对应的文档
+【LangGraph】
+https://my.feishu.cn/docx/B8uQdQ16wo5eAax0v6cciK60nad
+
+
