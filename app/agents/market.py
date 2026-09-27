@@ -1,5 +1,4 @@
 from app.state import StockState
-
 from app.tools.stock_tool import get_stock_info
 
 """
@@ -14,17 +13,28 @@ LLM
   ↓
 返回结构化数据
 """
+
+
 def market_node(state: StockState):
     stock = state["stock"]
 
     print(f"获取市场数据 for: {stock}")
 
-    data = get_stock_info(stock)
+    if not stock:
+        # 路由保证这里 stock 非空，但留个兜底：
+        # 宁可带着"没数据"往下走，也不要让整张图崩掉
+        print("[market] stock 为空，跳过行情查询")
+        return {"market_data": {"found": False, "message": "股票名称为空"}, "status": "DONE_MARKET"}
 
-    state["market_data"] = data
+    try:
+        data = get_stock_info(stock)
+    except Exception as exc:
+        # 取数失败不是致命错误，标记后继续走 technical，
+        # 让后续节点有机会降级处理（比如只做技术面分析）
+        print(f"[market] 行情查询异常：{exc}")
+        data = {"found": False, "message": f"行情查询失败：{exc}"}
 
-    state["status"] = "DONE_MARKET"
     print(f"返回 state : {state}")
     print(f"market_node 返回state: {state}")
 
-    return state
+    return {"market_data": data, "status": "DONE_MARKET"}

@@ -26,16 +26,14 @@ print('3-route_after_planner')
 
 
 def route_after_planner(state: StockState):
-    # if state["status"] == "OK":
-    #     return "technical"
-    if state["status"] == "NEED_INPUT":
-        print(f"route_after_planner 返回state: {state}")
+    status = state.get("status")
 
-        return "ask_user"
-    # 让 Planner 决定是否进入 Market：
-    if state["status"] == "OK":
-        print(f"route_after_planner 返回state: {state}")
+    print(f"route_after_planner 判断依据: {state}")
+    print(f"route_after_planner 返回: {status}")
+
+    if status == "OK":
         return "market"
+
     return "ask_user"
 
 
@@ -54,9 +52,11 @@ builder.add_conditional_edges(
 # [3]* 第9步：连接普通边
 # 9-告诉 Graph 从哪里开始
 builder.add_edge(START, "planner")
-# 10-告诉 Graph 哪里结束
-builder.add_edge("planner", END)
+
 # 第10步：Market → Technical → Summary,继续补链路：
+# 注意：planner 的出口只由上面的条件边决定。
+# 不要再加 builder.add_edge("planner", END)，
+# 那会让 planner 有两条出边，条件路由被架空。
 builder.add_edge("market", "technical")
 builder.add_edge("technical", END)
 builder.add_edge("ask_user", END)
