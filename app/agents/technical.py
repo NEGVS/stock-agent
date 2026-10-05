@@ -1,14 +1,45 @@
+
 from app.state import StockState
 
+from app.tools.indicator import (
+    generate_mock_kline,
+    calc_ma, calc_rsi
+)
 
+# 技术分析 Agent,Technical Node（核心）
 # 3- 第5步：新增 Technical Node
 def technical(state: StockState):
     stock = state.get("stock")
-    print(f" 技术分析：{stock}")
 
-    market_data = state.get("market_data") or {}
+    print(f" 技术分析：{state['stock']}")
 
-    if not market_data.get("found"):
-        print(f"[technical] 缺少行情数据：{market_data.get('message')}")
+    df = generate_mock_kline()
 
-    return {"technical": f"{stock} 技术面分析占位", "status": "DONE_TECH"}
+    ma5 = calc_ma(df, 5)
+    ma20 = calc_ma(df, 20)
+    rsi = calc_rsi(df)
+
+    # ===趋势判断===
+    if ma5 > ma20:
+        trend = "上涨趋势"
+    else:
+        trend = "下跌/震荡"
+
+    # ==rsi判断==
+    if rsi > 70:
+        signal = "超买（谨慎）"
+    elif rsi > 30:
+        signal = "超卖（机会）"
+    else:
+        signal = "中性"
+
+    state["technical"] = {
+        "ma5": ma5,
+        "ma20": ma20,
+        "rsi": rsi,
+        "trend": trend,
+        "signal": signal
+    }
+
+    state["status"] = "DONE_TECH"
+    return state

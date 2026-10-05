@@ -1,4 +1,4 @@
-from typing import NotRequired, TypedDict
+from typing import NotRequired, TypedDict, Dict, Any, Optional
 
 
 # 整个 Graph 的共享内存。
@@ -12,15 +12,28 @@ from typing import NotRequired, TypedDict
 class StockState(TypedDict, total=False):
     # 输入
     question: str
-    stock: NotRequired[str | None]  # 未识别到股票时为 None
+    stock: Optional[str]  # 未识别到股票时为 None
 
     # 各节点的产出
-    market_data: NotRequired[dict]
+
     news: NotRequired[str]
-    technical: NotRequired[str]
     fund: NotRequired[str]
     risk: NotRequired[str]
     summary: NotRequired[str]
+    market_data: Dict[str, Any]  # 新增 /第7步：升级 State（非常关键）
+
+    technical: Dict[str, Any]  # 👈 新增：技术分析结果
 
     # 流程控制
-    status: NotRequired[str]
+    status: NotRequired[str]  # NEW: 用来控制流程
+
+#      # 这就是所有节点共享的数据。
+#     question: str
+#     stock: Optional[str]
+#     news: str
+#     technical: str
+#     fund: str
+#     risk: str
+#     summary: str
+#     status: str # NEW: 用来控制流程
+#     market_data: dict # 新增 /第7步：升级 State（非常关键）
