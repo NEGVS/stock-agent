@@ -31,3 +31,32 @@ python main.py
 https://my.feishu.cn/docx/B8uQdQ16wo5eAax0v6cciK60nad
 
 
+
+
+stock-agent/
+
+├── pyproject.toml
+├── uv.lock
+│
+├── app
+│   ├── graph
+│   │   └── workflow.py
+│   │
+│   ├── agents
+│   │   ├── planner_agent.py
+│   │   ├── news_agent.py
+│   │   ├── financial_agent.py
+│   │   ├── risk_agent.py
+│   │   └── report_agent.py
+│   │
+│   ├── tools
+│   │   ├── stock_tool.py
+│   │   └── news_tool.py
+│   │
+│   ├── api
+│   │   └── app.py
+│   │
+│   └── models
+│       └── state.py
+│
+└── tests
