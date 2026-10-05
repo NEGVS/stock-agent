@@ -38,3 +38,16 @@ def market_node(state: StockState):
     print(f"market_node 返回state: {state}")
 
     return {"market_data": data, "status": "DONE_MARKET"}
+
+
+#  第6步：Market Agent（升级版）
+def market_agent(state: StockState):
+    stock = state['stock']
+
+    data = get_stock_info(stock)
+
+    state['market_data'] = data
+
+    state['messages'].append('Market分析完成')
+
+    return state

@@ -43,3 +43,26 @@ def technical(state: StockState):
 
     state["status"] = "DONE_TECH"
     return state
+
+
+#  第7步：Technical Agent（升级版）
+
+def technical_agent(state: StockState):
+    df = generate_mock_kline()
+
+    ma5 = calc_ma(df, 5)
+    ma20 = calc_ma(df, 20)
+    rsi = calc_rsi(df)
+
+    trend = '上涨' if ma5 > ma20 else '下跌'
+
+    state['technical'] = {
+        "ma5": ma5,
+        "ma20": ma20,
+        "rsi": rsi,
+        "trend": trend
+    }
+
+    state['messages'].append('Technical 分析完成')
+
+    return state

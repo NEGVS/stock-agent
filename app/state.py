@@ -1,4 +1,5 @@
-from typing import NotRequired, TypedDict, Dict, Any, Optional
+from typing import TypedDict, Dict, Any, Optional, List, Annotated
+import operator
 
 
 # 整个 Graph 的共享内存。
@@ -16,16 +17,24 @@ class StockState(TypedDict, total=False):
 
     # 各节点的产出
 
-    news: NotRequired[str]
-    fund: NotRequired[str]
-    risk: NotRequired[str]
-    summary: NotRequired[str]
+    news: Dict[str, Any]
+
+    fund: str
+
+    risk: Dict[str, Any]
+
+    summary: Dict[str, Any]
+
     market_data: Dict[str, Any]  # 新增 /第7步：升级 State（非常关键）
 
     technical: Dict[str, Any]  # 👈 新增：技术分析结果
 
     # 流程控制
-    status: NotRequired[str]  # NEW: 用来控制流程
+    status: str  # NEW: 用来控制流程
+
+    messages: List[str] # Agent之间沟通日志
+    # 你现在 messages: List[str] 没有加 reducer。如果多个节点都返回 messages，默认会覆盖，而不是追加。
+    # messages: Annotated[List[str], operator.add]  # Agent之间沟通日志
 
 #      # 这就是所有节点共享的数据。
 #     question: str
