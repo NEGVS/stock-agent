@@ -1,0 +1,75 @@
+帮我看一下，我已经执行了uv add langgraph
+为什么
+from langgraph.graph import StateGraph
+还是报错，
+(stock-agent) andy_mac@Andy-FandeMacBook-Pro-547 stock-agent % uv pip list
+Using Python 3.11.15 environment at: /opt/anaconda3/envs/stock-agent
+Package    Version
+---------- -------
+packaging  26.0
+pip        26.1.2
+setuptools 82.0.1
+wheel      0.47.0
+
+## 一、Conda + UV 查看已安装包命令汇总
+### 1）Conda（查看虚拟环境、环境内包）
+```bash
+# 查看所有conda虚拟环境
+conda env list
+# 激活环境
+conda activate 环境名
+# 查看当前conda环境全部安装包
+conda list
+# 检索某个包
+conda list | grep langgraph
+```
+
+### 2）UV（项目依赖、Python包主流查看方式）
+uv接管依赖安装后优先用uv查询：
+```bash
+# 查看当前项目已安装所有依赖
+uv pip list
+
+# 查看依赖树（谁依赖了谁）
+uv pip tree
+
+# 检索指定包
+uv pip list | grep langgraph
+
+# 查看uv记录的依赖清单
+cat pyproject.toml
+# 锁定版本文件
+cat uv.lock
+```
+
+## 二、`from langgraph.graph import StateGraph` 导入报错核心原因
+### 原因：环境里没安装 langgraph 包
+### 安装命令（uv 极速安装）
+```bash
+# 当前项目环境安装langgraph
+uv pip install langgraph
+```
+如需带依赖全套：
+```bash
+uv pip install langgraph langchain langchain-openai
+```
+
+### 安装完成后验证
+```bash
+uv pip list | grep langgraph
+```
+出现版本号即安装成功，重新运行代码导入就不会报错。
+
+## 三、常见踩坑
+1. **装到了别的conda环境**
+先 `conda activate 你正在使用的环境`，再执行 uv 安装；
+uv 默认绑定当前激活的Python解释器。
+2. **IDE解释器选错**
+VSCode/Pycharm右下角切换到当前conda+uv对应的Python路径。
+3. 版本过低
+```bash
+uv pip install --upgrade langgraph
+```
+
+## 极简一句话
+导入报错 = 未安装langgraph；执行 `uv pip install langgraph` 即可解决。

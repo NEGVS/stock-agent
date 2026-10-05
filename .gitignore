@@ -33,6 +33,6 @@ htmlcov/
 ._*
 
 # ---- 日志与本地配置 ----
-*.log
+#*.log
 .env
 .env.local
