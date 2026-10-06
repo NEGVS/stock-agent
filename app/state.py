@@ -36,6 +36,8 @@ class StockState(TypedDict, total=False):
     # 你现在 messages: List[str] 没有加 reducer。如果多个节点都返回 messages，默认会覆盖，而不是追加。
     # messages: Annotated[List[str], operator.add]  # Agent之间沟通日志
 
+
+    memory: Dict[str, Any]   # 👈 新增,升级 State（加入历史记忆）
 #      # 这就是所有节点共享的数据。
 #     question: str
 #     stock: Optional[str]

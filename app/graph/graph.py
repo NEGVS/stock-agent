@@ -12,6 +12,8 @@ from app.agents.summary_agent import summary_agent
 from app.agents.technical import technical_agent
 from app.agents.market import market_agent
 
+from app.agents.memory_agent import memory_agent
+
 print('1-StateGraph')
 # 这里不是创建 Graph。 而是在创建： Graph Builder（建造器）,Step 12.2 创建 Graph
 builder = StateGraph(StockState)
@@ -26,6 +28,8 @@ builder.add_node("technical", technical_agent)
 builder.add_node("risk", risk_agent)
 builder.add_node("summary", summary_agent)
 builder.add_node("news", news_agent)
+builder.add_node("memory", memory_agent)
+
 
 # 最关键 —— 条件函数 # 我们写一个“路由器函数”
 # 这个函数的本质：# 它不是业务逻辑，而是：# Graph 调度器（Router）
@@ -71,7 +75,8 @@ builder.add_edge(START, "news")
 # 那会让 planner 有两条出边，条件路由被架空。
 
 # 然后汇聚
-builder.add_edge("market", "risk")
+builder.add_edge("market", "memory")
+builder.add_edge("memory", "technical")
 builder.add_edge("technical", 'risk')
 builder.add_edge("news", 'risk')
 builder.add_edge("risk", 'summary')

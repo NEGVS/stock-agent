@@ -14,6 +14,7 @@ dependencies = [
     # SOCKS5 代理支持，requests 走 socks5h:// 时必需
     "pysocks>=1.7.1",
     "akshare-proxy-patch==0.5.0",
+    "redis>=8.1.0",
 ]
 
 [project.optional-dependencies]
