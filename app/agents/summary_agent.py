@@ -4,6 +4,8 @@ from app.memory.memory import save_memory
 
 #  第11步：Summary Agent（总控）
 def summary_agent(state: StockState):
+    print('summary_agent -1')
+
     stock = state['stock']
     decision = state['summary']['decision']
 
@@ -25,5 +27,6 @@ def summary_agent(state: StockState):
         'technical': state['technical'],
     })
     state['messages'].append('Memory已更新')
+    print('summary_agent -2')
 
     return state

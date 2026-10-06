@@ -2,9 +2,7 @@ from langgraph.graph import StateGraph,START,END
 from app.state import StockState
 
 from app.agents.news_agent import news_agent
-# from app.agents.planner import planner
 
-# from app.agents.ask_user import ask_user
 from app.agents.risk_agent import risk_agent
 from app.agents.summary_agent import summary_agent
 
@@ -13,6 +11,7 @@ from app.agents.technical import technical_agent
 from app.agents.market import market_agent
 
 from app.agents.memory_agent import memory_agent
+from app.agents.reflection_agent import reflection_agent
 
 print('1-StateGraph')
 # 这里不是创建 Graph。 而是在创建： Graph Builder（建造器）,Step 12.2 创建 Graph
@@ -29,6 +28,7 @@ builder.add_node("risk", risk_agent)
 builder.add_node("summary", summary_agent)
 builder.add_node("news", news_agent)
 builder.add_node("memory", memory_agent)
+builder.add_node("reflection", reflection_agent)
 
 
 # 最关键 —— 条件函数 # 我们写一个“路由器函数”
@@ -80,7 +80,11 @@ builder.add_edge("memory", "technical")
 builder.add_edge("technical", 'risk')
 builder.add_edge("news", 'risk')
 builder.add_edge("risk", 'summary')
-builder.add_edge("summary", END)
+builder.add_edge("summary", 'reflection')
+# Step 7.3 调整执行链 # 原来：
+# Risk → Summary → END # 现在变成：
+# Risk → Summary → Reflection → Memory → END
+builder.add_edge("reflection", END)
 
 # 第11步：编译,这里才真正生成： Graph Runtime。
 graph = builder.compile()

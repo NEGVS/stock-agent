@@ -4,6 +4,8 @@ from app.state import StockState
 #  第10步：Risk Agent（风控）
 def risk_agent(state: StockState):
     risk_score = 0
+    print('risk_agent-1')
+
 
     if state['technical']['rsi'] > 70:
         risk_score += 30
@@ -15,4 +17,6 @@ def risk_agent(state: StockState):
         'level': 'HIGH' if risk_score > 60 else 'LOW'
     }
     state['messages'].append('Risk分析完成')
+    print('risk_agent-2')
+
     return state

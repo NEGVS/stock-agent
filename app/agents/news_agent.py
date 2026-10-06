@@ -3,6 +3,8 @@ from app.state import StockState
 
 # 第8步：News Agent（新增）
 def news_agent(state: StockState):
+    print('news_agent-1')
+
     stock = state['stock']
 
     # 模拟新闻，（后面接真是api）
@@ -15,4 +17,6 @@ def news_agent(state: StockState):
         'sentiment': 'positive'
     }
     state['messages'].append('News分析完成')
+    print('news_agent-2')
+
     return state

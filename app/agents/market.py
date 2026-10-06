@@ -42,6 +42,7 @@ def market_node(state: StockState):
 
 #  第6步：Market Agent（升级版）
 def market_agent(state: StockState):
+    print('第6步：Market Agent（升级版）--market_agent--1')
     stock = state['stock']
 
     data = get_stock_info(stock)
@@ -49,5 +50,7 @@ def market_agent(state: StockState):
     state['market_data'] = data
 
     state['messages'].append('Market分析完成')
+    print('第6步：Market Agent（升级版）--market_agent--2')
+    print(state)
 
     return state

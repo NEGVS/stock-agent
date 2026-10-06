@@ -49,6 +49,7 @@ def technical(state: StockState):
 
 def technical_agent(state: StockState):
     df = generate_mock_kline()
+    print('technical_agent-1')
 
     ma5 = calc_ma(df, 5)
     ma20 = calc_ma(df, 20)
@@ -64,5 +65,6 @@ def technical_agent(state: StockState):
     }
 
     state['messages'].append('Technical 分析完成')
+    print('technical_agent-2')
 
     return state
